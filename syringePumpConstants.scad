@@ -6,7 +6,10 @@ inch = 25.4; //for mm conversion
 
 //Not all of these variables are used in this specific model,
 //but the same variable set is used across all models in this project.
+//todo parameterize based on motor type and barrel diameter
 
+//	motor_width = 42; // NEMA 17
+motor_width = 28.5; // NEMA 11
 
 //width of base
 
@@ -34,7 +37,9 @@ bearing608Diameter = 22.5;
 mountPlateHeight = 5;
 
 //axis heights
-threadedAxisHeight = stepperZSize/2 + mountPlateHeight + 4;
+//threadedAxisHeight = stepperZSize/2 + mountPlateHeight + 4;
+threadedAxisHeight=0;
+space_above_floor = 0;
 echo("threadedAxisHeight ", threadedAxisHeight);
 smoothAxisHeight = (threadedAxisHeight-6.6) / 2;
 smoothRodRadius = 4.2;

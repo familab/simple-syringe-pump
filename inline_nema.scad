@@ -6,7 +6,7 @@ motor_width = 28.5; // NEMA 11
 frame_width = motor_width + (wall_thickness + 1)*2;
 bolt = 4;
 height=0;
-inch = 15;
+
 
 
 //these are all the mount point holes.
@@ -66,7 +66,7 @@ nema_17_mount();
                     translate([frame_width/2+0.5, height - 5, -wall_thickness])
                     {
                         //todo where are all of these 10's and 11's coming from?
-                        #translate([11.5, 11.5, -2*wall_thickness])
+                        translate([11.5, 11.5, -2*wall_thickness])
                             cylinder(r=bolt/2, h=4*wall_thickness+1);
                         translate([-11.5, 11.5, -2*wall_thickness])
                             cylinder(r=bolt/2, h=4*wall_thickness+1);
@@ -79,9 +79,14 @@ nema_17_mount();
                         
                     }
                 }
-                translate([-frame_width/2, wall_thickness, -wall_thickness]){
+                translate([-frame_width, wall_thickness, -wall_thickness]){
                     rotate([0,90,0]){
-                        #cylinder(r=screwRadius,h=2*frame_width);
+                        cylinder(r=screwRadius,h=frame_width);
+                    }
+                }
+              translate([frame_width, wall_thickness, -wall_thickness]){
+                    rotate([0,90,0]){
+                        cylinder(r=screwRadius,h=frame_width);
                     }
                 }
             }
