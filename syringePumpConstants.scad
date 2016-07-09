@@ -1,12 +1,12 @@
 
+$fs = 0.1;
+
+inch = 25.4; //for mm conversion
 /* === Project-universal Constants === */
 
 //Not all of these variables are used in this specific model,
 //but the same variable set is used across all models in this project.
 
-$fs = 0.1;
-
-inch = 25.4; //for mm conversion
 
 //width of base
 
@@ -66,5 +66,5 @@ nemaWidth=28.5;
 barrelTabsMax = 38.0;
 barrelTabsThickness = 2.0;
 //screwRadius=3.2;
-screwRadius=3.875;
+//screwRadius=3.875; //wtf where did that come from?
 extrusionTabWidth=wallThickness*1.5;

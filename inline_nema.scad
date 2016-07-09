@@ -5,15 +5,9 @@ wall_thickness = 5;
 motor_width = 28.5; // NEMA 11
 frame_width = motor_width + (wall_thickness + 1)*2;
 bolt = 4;
-//height = 25;
 height=0;
-//	inch = 25.4;
-//	screwPlateSize = 25;	
-//	screwRadius = 3.25;
-
 inch = 15;
-screwPlateSize = 25;	
-screwRadius = 1.5;
+
 
 //these are all the mount point holes.
 x1 = -wall_thickness;
@@ -33,8 +27,6 @@ module fake_extrusion(){
         cube([100,extrusionThickness,extrusionThickness]);
     }
     }
-    
-    //translate([nemaWidth,-50,-(extrusionThickness/2 +wall_thickness)])  //centered
     translate([wall_thickness+nemaWidth+extrusionThickness+1,-55,-(extrusionThickness/2 +wall_thickness)])
     {
     rotate([0,0,90]){
@@ -55,54 +47,43 @@ nema_17_mount();
             {
                 //build the main unit.
                 //positive
-
                 union()
                 {
-                    translate([0,0,-(frame_width+10)/2]){
-                    //structure
-                    //cube([wall_thickness, frame_width, frame_width]); //front face
-                    cube([frame_width, 2*wall_thickness, frame_width]); //left face
-                        translate([-12,0,10]){
-                    cube([frame_width+24, 2*wall_thickness, frame_width/2]); //left face    
+                    translate([0,0,-(frame_width+2*wall_thickness)/2]){
+                    cube([frame_width, 2*wall_thickness, frame_width]);
+                       //todo where do the 12 and 24 come from? 
+                        translate([-12,0,2*wall_thickness]){
+                    cube([frame_width+24, 2*wall_thickness, frame_width/2]);
                         }
-                    //translate([frame_width - wall_thickness, 0, 0])     //right face
-                    //    cube([wall_thickness, frame_width, frame_width]);
-                        
-
                 }
-                
-                    
             }
 
-
 //negative
-            #fake_extrusion();
+            fake_extrusion();
                 //nema 11 mount
                 rotate([90, 0, 0])
                 {
                     translate([frame_width/2+0.5, height - 5, -wall_thickness])
                     {
-                        translate([11.5, 11.5, -10])
+                        //todo where are all of these 10's and 11's coming from?
+                        #translate([11.5, 11.5, -2*wall_thickness])
                             cylinder(r=bolt/2, h=4*wall_thickness+1);
-                        translate([-11.5, 11.5, -10])
+                        translate([-11.5, 11.5, -2*wall_thickness])
                             cylinder(r=bolt/2, h=4*wall_thickness+1);
-                        translate([11.5, -11.5, -10])
+                        translate([11.5, -11.5, -2*wall_thickness])
                             cylinder(r=bolt/2, h=4*wall_thickness+1);
-                        translate([-11.5, -11.5, -10])
+                        translate([-11.5, -11.5, -2*wall_thickness])
                             cylinder(r=bolt/2, h=4*wall_thickness+1);
-                        translate([0, 0, -10])  //wtf? double voodoo
-                        cylinder(r=11.5, h=4*wall_thickness+1);
-
-   
+                        translate([0, 0, -2*wall_thickness])
+                            cylinder(r=11.5, h=4*wall_thickness+1);
+                        
                     }
                 }
-
-                //back slant cutaway
-                translate([0, 0, frame_width+wall_thickness])
-                    rotate([45, 0, 0])
-                        translate([-frame_width, 0, -frame_width*2])
-                            cube(size=[frame_width*4, frame_width*2, frame_width*4]);
-
+                translate([-frame_width/2, wall_thickness, -wall_thickness]){
+                    rotate([0,90,0]){
+                        #cylinder(r=screwRadius,h=2*frame_width);
+                    }
+                }
             }
         }
     }
