@@ -3,6 +3,7 @@ include <syringePumpConstants.scad>
 
 
 wall_thickness = 5;
+part_thickness = 8;
 
 frame_width = motor_width + (wall_thickness + 1)*2;
 bolt = 4;
@@ -39,9 +40,9 @@ barrel_mount();
                 union()
                 {
                     translate([0,0,-(frame_width+10)/2]){
-                    cube([frame_width, wall_thickness, frame_width]);
+                    cube([frame_width, part_thickness, frame_width]);
                         translate([-12,0,10]){
-                    cube([frame_width+24, wall_thickness, frame_width/2]);    
+                    cube([frame_width+24, part_thickness, frame_width/2]);    
                         }
                 }
             }
@@ -49,7 +50,8 @@ barrel_mount();
 
 //negative
             fake_extrusion();
-                rotate([90, 0, 0])
+            rotate([90, 0, 0])
+            // todo remove that rotation
                 {
                     translate([frame_width/2+0.5, height - 5, -wall_thickness])
                     {
@@ -61,12 +63,12 @@ barrel_mount();
                     cube([barrelDiameter,barrelDiameter,barrelDiameter]);
                 }
                 
-              translate([-frame_width, -wall_thickness, -wall_thickness/2]){
+              translate([-frame_width, -wall_thickness, -part_thickness/2]){
                     rotate([0,90,0]){
                         #cylinder(r=screwRadius,h=frame_width);
                     }
                 }
-             translate([frame_width, -wall_thickness, -wall_thickness/2]){
+             translate([frame_width, -wall_thickness, -part_thickness/2]){
                     rotate([0,90,0]){
                         #cylinder(r=screwRadius,h=frame_width);
                     }
