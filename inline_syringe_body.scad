@@ -26,8 +26,10 @@ module fake_extrusion(){
     }
 }
 
-translate([0,0,wall_thickness + space_above_floor]){
+rotate([90,0,0]){
+translate([0,0,wall_thickness]){
 barrel_mount();
+}
 }
     module barrel_mount()
     {
