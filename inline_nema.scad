@@ -1,23 +1,12 @@
 include <syringePumpConstants.scad>
 
 wall_thickness = 5;
+part_thickness = 8;
 //	motor_width = 42; // NEMA 17
 motor_width = 28.5; // NEMA 11
 frame_width = motor_width + (wall_thickness + 1)*2;
 bolt = 4;
 height=0;
-
-
-
-//these are all the mount point holes.
-x1 = -wall_thickness;
-y1 = wall_thickness*2;
-x2 = frame_width+wall_thickness;
-y2 = wall_thickness*2;
-x3 = -wall_thickness;
-y3 = frame_width-wall_thickness*2;
-x4 = frame_width + wall_thickness;
-y4 = frame_width-wall_thickness*2;
 
 module fake_extrusion(){
     
@@ -35,10 +24,11 @@ module fake_extrusion(){
     }
 }
 
-translate([0,0,wall_thickness]){
-nema_17_mount();
+translate([0,0,0]){
+    rotate([90,0,0])
+nema_mount();
 }
-    module nema_17_mount()
+    module nema_mount()
     {
         //center the whole thing in X
         translate([-frame_width/2, 0, 0])
@@ -59,7 +49,8 @@ nema_17_mount();
             }
 
 //negative
-            fake_extrusion();
+            
+            %fake_extrusion();
                 //nema 11 mount
                 rotate([90, 0, 0])
                 {
