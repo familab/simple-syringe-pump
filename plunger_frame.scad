@@ -86,28 +86,7 @@ module extrusion_tab(){
     cube([wallThickness*2,barrelTabsMin+4*wallThickness,extrusionThickness+2*wallThickness]);
     }
 }
-// internal bed for the nut
-//used in nutSideHole
-module nutWell(){
-	//compose the outline of the 6-sided nut using 3 cubes. Yay geometry.
 
-   rotate(a=[0,0,-30]){
-	translate([-nutEdgeLength/2, -nutAcross/2, 0]){
-		cube(size=[nutEdgeLength + correctionFactor,nutAcross + correctionFactor,nutWellDepth+floatCorrection2  + correctionFactor ]);
-	}}
-
-		rotate(a=[0,0,90]){
-			translate([-nutEdgeLength/2, -nutAcross/2, 0]){
-				cube(size=[nutEdgeLength + correctionFactor,nutAcross + correctionFactor,nutWellDepth+floatCorrection2  + correctionFactor ]);
-			}
-		}
-	
-		rotate(a=[0,0,-150]){
-			translate([-nutEdgeLength/2, -nutAcross/2, 0]){
-				cube(size=[nutEdgeLength + correctionFactor,nutAcross + correctionFactor,nutWellDepth+floatCorrection2  + correctionFactor ]);
-			}
-		}
-}
 
 // side opening to slide the nut in place
 // used in nutSideHole
@@ -121,19 +100,10 @@ module nutSideOpening(){
 
 // union of the nut bed and its side opening + the hole for the threaded rod 
 module nutSideHole(){
-    union(){
-    //nut
-	translate([nutCenterX,centerY,threadedAxisHeight]){
-		rotate(a=[0,90,0]){
-			nutWell();
-		}
-	}
-    
     // side opening to slide the nut in position
     	translate([nutCenterX,2*centerY,threadedAxisHeight- (nutWellDepth+floatCorrection2  + 2*correctionFactor) ]){
 		rotate(a=[90,0,0]){
 			nutSideOpening();
-		}
 	}
 }
 }
@@ -145,7 +115,6 @@ module nutBlock(){
         translate([-nutBlockLength/2+wallThickness,-nutBlockWidth/2,-nutBlockHeight/2]){
     cube([nutBlockLength,nutBlockWidth,nutBlockHeight]);
         }
-        nutWell();
     rotate([90,0,0]){
         nutSideHole();
     }
@@ -195,9 +164,58 @@ difference(){
     }
     }
     
-    whole_thing();
-    //nutBlock();
+ //   whole_thing();
 
-    //    }
-    
-    
+
+nutAcross = 13.2;
+nutDepth = 6.2;
+nutBlockLength=nutDepth+2*wallThickness;
+nutBlockWidth=nutAcross+2*wallThickness;
+nutBlockHeight=nutAcross+wallThickness;
+plungerEndDiameter=22.0;
+plungerEndThickness=2.15;
+plungerStemDiameter=13.0;
+
+difference() {
+	union() {
+		//main frame
+		difference() {
+			union() {
+				cube([plunger_frame_thickness,plunger_frame_width,plunger_frame_length],center=true); // main frame
+				cube([extrusionThickness+2*wallThickness,barrelTabsMin+4*wallThickness,wallThickness*2],center=true);
+				translate([0,0,plunger_frame_length/2-wallThickness])
+					cube([extrusionThickness+2*wallThickness,barrelTabsMin+4*wallThickness,wallThickness*2],center=true);
+				translate([0,0,-plunger_frame_length/2+wallThickness])
+					cube([extrusionThickness+2*wallThickness,barrelTabsMin+4*wallThickness,wallThickness*2],center=true);
+			}
+			cube([plunger_frame_thickness+floatCorrection2,plunger_frame_width-wallThickness*2,plunger_frame_length-wallThickness*2],center=true);
+		}
+		
+		//captive nut
+		difference() {
+			translate([0,0,plunger_frame_length/2+wallThickness]) // captive nut
+				cube([nutBlockHeight,nutBlockWidth,nutBlockLength],center=true);
+			translate([0,0,plunger_frame_length/2+nutDepth/2])
+				cube([plunger_frame_thickness,nutAcross,nutDepth],center=true);
+		}
+		
+		//plunger holder
+		difference() {
+			translate([0,0,-plunger_frame_length/2-(plungerEndThickness+wallThickness)/2]) // plunger 
+				cube([plunger_frame_thickness,plunger_frame_width,plungerEndThickness+wallThickness],center=true);
+			translate([0,0,-plunger_frame_length/2-plungerEndThickness/2])
+				cube([plunger_frame_thickness*2,plungerEndDiameter,plungerEndThickness],center=true);
+			translate([0,0,-wallThickness-plunger_frame_length/2])
+				cylinder(wallThickness*2,d=plungerStemDiameter,center=true);
+			translate([plungerStemDiameter/2,0,-wallThickness-plunger_frame_length/2])
+				cube([plungerStemDiameter,plungerStemDiameter,wallThickness*2],center=true);
+		}
+	}
+	//threaded rod
+	cylinder(plunger_frame_length+40,screwRadius,screwRadius,center=true);
+	//aluminum extrusions
+	translate([0,barrelTabsMin/2+wallThickness*2,0])
+		cube([extrusionThickness,extrusionThickness,plunger_frame_length*2],center=true);
+	translate([0,-(barrelTabsMin/2+wallThickness*2),0])
+		cube([extrusionThickness,extrusionThickness,plunger_frame_length*2],center=true);
+}
